@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fitness & Health Test | CrossFit Viseu</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">CrossFit Viseu</p>
+        <h1>Fitness & Health Test</h1>
+      </div>
+      <nav class="nav-tabs" aria-label="Navegação principal">
+        <button class="tab active" data-view="admin">Admin</button>
+        <button class="tab" data-view="athlete">Atleta</button>
+        <button class="tab" data-view="logic">Lógica Excel</button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="admin" class="view active">
+        <div class="admin-layout">
+          <aside class="panel sidebar">
+            <div class="panel-heading">
+              <span class="panel-kicker">Acesso equipa</span>
+              <h2>Admin</h2>
+            </div>
+            <form id="loginForm" class="stack">
+              <label>
+                Palavra-passe
+                <input id="adminPassword" type="password" placeholder="demo: cfviseu" autocomplete="current-password" />
+              </label>
+              <button class="primary" type="submit">Entrar</button>
+            </form>
+            <div id="adminTools" class="stack hidden">
+              <button class="secondary" id="seedDemo" type="button">Carregar exemplo</button>
+              <button class="ghost" id="resetData" type="button">Limpar dados locais</button>
+              <p class="small">Protótipo local: os dados ficam guardados neste browser. Para produção, usar base de dados com autenticação real.</p>
+            </div>
+          </aside>
+
+          <section class="workspace">
+            <div class="dashboard-grid">
+              <article class="metric-card">
+                <span>Atletas avaliados</span>
+                <strong id="metricAthletes">0</strong>
+              </article>
+              <article class="metric-card">
+                <span>Score médio</span>
+                <strong id="metricAverage">0</strong>
+              </article>
+              <article class="metric-card">
+                <span>Zona predominante</span>
+                <strong id="metricZone">-</strong>
+              </article>
+              <article class="metric-card">
+                <span>Melhor evolução</span>
+                <strong id="metricProgress">-</strong>
+              </article>
+            </div>
+
+            <div class="split">
+              <section class="panel">
+                <div class="panel-heading row">
+                  <div>
+                    <span class="panel-kicker">Registo</span>
+                    <h2>Novo atleta</h2>
+                  </div>
+                  <button id="newAthleteCode" class="icon-button" title="Gerar código" type="button">↻</button>
+                </div>
+                <form id="athleteForm" class="form-grid">
+                  <label>Nome<input id="athleteName" required /></label>
+                  <label>Sexo
+                    <select id="athleteSex">
+                      <option value="M">Masculino</option>
+                      <option value="F">Feminino</option>
+                    </select>
+                  </label>
+                  <label>Idade<input id="athleteAge" type="number" min="12" max="90" value="35" /></label>
+                  <label>Grupo/Turma<input id="athleteGroup" placeholder="Ex.: 18h30" /></label>
+                  <label>Código<input id="athleteCode" required /></label>
+                  <button class="primary full" type="submit">Guardar atleta</button>
+                </form>
+              </section>
+
+              <section class="panel">
+                <div class="panel-heading">
+                  <span class="panel-kicker">Histórico</span>
+                  <h2>Atletas</h2>
+                </div>
+                <div id="athleteList" class="list"></div>
+              </section>
+            </div>
+
+            <section class="panel">
+              <div class="panel-heading row">
+                <div>
+                  <span class="panel-kicker">Avaliação</span>
+                  <h2>Inserção rápida de resultados</h2>
+                </div>
+                <select id="selectedAthlete"></select>
+              </div>
+              <form id="assessmentForm" class="assessment-grid">
+                <label>Data<input id="date" type="date" required /></label>
+                <label>Peso kg<input id="bw" type="number" step="0.1" required /></label>
+                <label>% Gordura<input id="fat" type="number" step="0.1" required /></label>
+                <label>Massa muscular kg<input id="muscle" type="number" step="0.1" required /></label>
+                <label>Gordura visceral<input id="visceral" type="number" step="0.1" required /></label>
+                <label>Água corporal %<input id="tbw" type="number" step="0.1" /></label>
+                <label>Altura m<input id="height" type="number" step="0.01" required /></label>
+                <label>Perímetro abdominal cm<input id="waist" type="number" step="0.1" /></label>
+                <label>Back squat carga<input id="backLoad" type="number" step="0.5" required /></label>
+                <label>Back squat reps<input id="backReps" type="number" min="1" max="5" value="3" required /></label>
+                <label>Shoulder press carga<input id="pressLoad" type="number" step="0.5" required /></label>
+                <label>Shoulder press reps<input id="pressReps" type="number" min="1" max="5" value="3" required /></label>
+                <label>Pull pattern
+                  <select id="pullVariant">
+                    <option>RING ROW</option>
+                    <option>BANDA PESADA</option>
+                    <option>BANDA SEMI PESADA</option>
+                    <option>BANDA SEMI LEVE</option>
+                    <option>BANDA LEVE</option>
+                    <option>PULL UP</option>
+                  </select>
+                </label>
+                <label>Pull carga/reps strict<input id="pullLoad" type="number" step="0.5" value="1" /></label>
+                <label>Pull reps<input id="pullReps" type="number" min="1" max="30" value="8" /></label>
+                <label>Row 2000m mm:ss<input id="rowTime" placeholder="08:10" /></label>
+                <label>Row 6' metros<input id="rowDistance" type="number" step="1" /></label>
+                <label>Metcon nível
+                  <select id="metconLevel">
+                    <option>RX</option>
+                    <option>Intermediate</option>
+                    <option>Beginner</option>
+                  </select>
+                </label>
+                <label>Metcon rondas<input id="rounds" type="number" min="0" value="5" /></label>
+                <label>Metcon reps<input id="reps" type="number" min="0" max="26" value="12" /></label>
+                <label class="wide">Notas do coach<textarea id="notes" rows="3"></textarea></label>
+                <button class="primary full" type="submit">Guardar avaliação</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading row">
+                <div>
+                  <span class="panel-kicker">Box</span>
+                  <h2>Dashboard geral</h2>
+                </div>
+                <div class="filters">
+                  <select id="filterSex"><option value="">Sexo</option><option>M</option><option>F</option></select>
+                  <input id="filterGroup" placeholder="Grupo" />
+                </div>
+              </div>
+              <div class="chart-row">
+                <canvas id="zoneChart" width="360" height="240" aria-label="Distribuição por zonas"></canvas>
+                <canvas id="boxTrend" width="520" height="240" aria-label="Evolução média da box"></canvas>
+              </div>
+              <div id="difficultyList" class="difficulty"></div>
+            </section>
+          </section>
+        </div>
+      </section>
+
+      <section id="athlete" class="view">
+        <div class="athlete-entry panel">
+          <div>
+            <span class="panel-kicker">Área do atleta</span>
+            <h2>Consultar histórico pessoal</h2>
+          </div>
+          <form id="codeForm" class="code-form">
+            <input id="accessCode" placeholder="Código pessoal" />
+            <button class="primary" type="submit">Ver relatório</button>
+          </form>
+        </div>
+        <section id="athleteReport" class="report hidden"></section>
+      </section>
+
+      <section id="logic" class="view">
+        <article class="panel readable">
+          <span class="panel-kicker">Resumo extraído do Excel</span>
+          <h2>Lógica encontrada</h2>
+          <p>O ficheiro tem dez folhas numeradas, usadas como avaliações sequenciais, e uma folha “Comparações” que consolida o histórico. A estrutura base combina composição corporal, força relativa, endurance no row e metcon.</p>
+          <div class="logic-grid">
+            <div><strong>Score total</strong><p>40% Health Index + 20% Força Relativa + 20% Endurance + 20% Metcon.</p></div>
+            <div><strong>Health Index</strong><p>60% CRI + 30% SORI + 10% FBI.</p></div>
+            <div><strong>Força Relativa</strong><p>Média ponderada: back squat 34%, shoulder press 33%, pull pattern 33%.</p></div>
+            <div><strong>Endurance</strong><p>VO2 estimado por 2000m row ou teste de 6 minutos, convertido para score por sexo e idade.</p></div>
+            <div><strong>Metcon</strong><p>Total reps = rondas × 27 + reps. A escala muda por nível RX, Intermediate ou Beginner.</p></div>
+            <div><strong>Curva S-W-F</strong><p>0-39 Sickness, 40-69 Wellness, 70-100 Fitness.</p></div>
+          </div>
+          <h3>Assumptions</h3>
+          <p>Algumas fórmulas do Excel usam funções LET e nomes locais. Foram replicadas as fórmulas visíveis principais; a massa gorda foi assumida como peso × gordura / 100 porque a célula correspondente estava sem fórmula explícita no XML. Os dados ficam em localStorage neste protótipo.</p>
+        </article>
+      </section>
+    </main>
+
+    <template id="reportTemplate">
+      <article class="report-card">
+        <div class="report-header">
+          <div>
+            <span class="panel-kicker">Relatório individual</span>
+            <h2 data-name></h2>
+            <p data-meta></p>
+          </div>
+          <div class="score-ring" data-score-ring><strong data-score></strong><span>Score</span></div>
+        </div>
+        <div class="wellness-curve" data-curve></div>
+        <div class="report-grid">
+          <canvas data-radar width="360" height="280"></canvas>
+          <canvas data-trend width="520" height="280"></canvas>
+        </div>
+        <div class="result-table" data-results></div>
+        <div class="notes-box" data-notes></div>
+        <button class="secondary print-button" type="button" onclick="window.print()">Exportar PDF</button>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
